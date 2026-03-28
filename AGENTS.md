@@ -9,11 +9,11 @@ Convert CUE files to tracklist text files.
 
 ## Output Format
 ```
-Performer - Title, HH:MM:SS
+Performer - Title HH:MM:SS
 ```
 
 Rules:
-- Format: `artist(s) - title, starttime`
+- Format: `artist(s) - title starttime`
 - No track numbering
 - Filter out jingle tracks (exclude entries with "Jingle" in the title)
 - Use the timestamps from INDEX 01 in the CUE file

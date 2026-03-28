@@ -26,7 +26,7 @@ Opencode will:
 Generates a `*tracklist.txt` file with format:
 
 ```
-Performer - Title, HH:MM:SS
+Performer - Title HH:MM:SS
 ```
 
 Tracks containing "Jingle" in the title are automatically excluded.
