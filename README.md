@@ -1,6 +1,10 @@
 # Generate Tracklist
+![AI-Powered Audio Conversion](assets/generate-mixcloudtracklist.png)
 
-Convert Rekordbox CUE files to Mixcloud-compatible tracklists.
+AI-agent driven tool for converting Rekordbox CUE files to Mixcloud-compatible tracklists. Designed to be controlled by AI coding assistants like [opencode](https://opencode.ai) or Claude Code.
+
+Just paste the generated Tracklist into the tracklist box when you are uploading mixes to Mixcloud.
+
 
 ## Usage
 
@@ -46,3 +50,4 @@ MIT
 - Mixcloud: [holger-kampffmeyer](https://mixcloud.com/holger-kampffmeyer)
 - LinkedIn: [holger-kampffmeyer](https://linkedin.com/in/holger-kampffmeyer-390b6789)
 
+**Note**: This tool is designed to be used with AI coding assistants.
