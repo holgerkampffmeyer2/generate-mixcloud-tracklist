@@ -22,8 +22,9 @@ Opencode will:
 1. Parse the CUE file
 2. Extract artist, title, and timestamps from INDEX 01
 3. Filter out tracks with "Jingle" in the title
-4. Create a tracklist file with the same name as input, e.g., `MyMix.cue` → `MyMix-tracklist.txt`
-5. No track numbering in output
+4. Create an engaging Mixcloud title and description
+5. Create a tracklist file with the same name as input, e.g., `MyMix.cue` → `MyMix-tracklist.txt`
+6. No track numbering in output
 
 ## Output
 
