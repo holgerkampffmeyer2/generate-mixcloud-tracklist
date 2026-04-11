@@ -2,7 +2,7 @@ name: AI Harness Scorecard
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   schedule:
     - cron: '0 6 * * 1'
   workflow_dispatch:
@@ -17,5 +17,5 @@ jobs:
       - uses: markmishaev76/ai-harness-scorecard@v1
         id: scorecard
         with:
-          output-badge: always
-          publish-badge: always
+          output-file: scorecard-report.md
+          badge-file: scorecard-badge.json
