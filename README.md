@@ -30,7 +30,18 @@ Opencode will:
 Generates a `*tracklist.txt` file with format:
 
 ```
+# Mix Title
+## Engaging description (2-3 sentences, makes listeners curious)
+
+If you enjoy, please fav, repost, comment!
+✨Your DJ Name ✨
+
+---
+
+TRACKLIST:
+
 Performer - Title HH:MM:SS
+...
 ```
 
 Tracks containing "Jingle" in the title are automatically excluded.

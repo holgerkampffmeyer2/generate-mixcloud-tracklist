@@ -27,3 +27,4 @@ Rules:
 - Use the timestamps from INDEX 01 in the CUE file
 - Create an engaging Mixcloud title (e.g., "DJ Name Mix-XXX - Genre")
 - Add a catchy 2-3 sentence description that makes listeners curious
+- Always add this line at the end of the description: "If you enjoy, please fav, repost, comment!" followed by "✨Your DJ Name ✨"
