@@ -1,0 +1,21 @@
+name: AI Harness Scorecard
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  scorecard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: markmishaev76/ai-harness-scorecard@v1
+        id: scorecard
+        with:
+          output-badge: always
+          publish-badge: always

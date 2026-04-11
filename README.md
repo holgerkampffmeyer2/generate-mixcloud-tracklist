@@ -1,4 +1,6 @@
 # Generate Mixcloud Tracklist from Rekordbox CUE file
+
+[![AI Harness Scorecard](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/holgerkampffmeyer2/generate-mixcloud-tracklist/master/scorecard-badge.json)](https://github.com/holgerkampffmeyer2/generate-mixcloud-tracklist/blob/master/scorecard-report.md)
 ![AI-Powered Audio Conversion](assets/generate-mixcloudtracklist.png)
 
 AI-agent driven tool for converting Rekordbox CUE files to Mixcloud-compatible tracklists. Designed to be controlled by AI coding assistants like [opencode](https://opencode.ai) or Claude Code.
