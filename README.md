@@ -49,6 +49,13 @@ Performer - Title HH:MM:SS
 
 Tracks containing "Jingle" in the title are automatically excluded.
 
+## Mixcloud SEO Tips
+
+- **Title**: Use format "DJ Name Mix-XXX - Genre" (e.g., "DJ Hulk Mix-178 - Tech House")
+- **Description**: 2-3 sentences explaining mood/concept, make listeners curious
+- **Tags**: Use up to 5 genre tags - mix broad (House, Techno) with specific (Tech House, Deep House)
+- **Tracklist**: Improves discoverability and appears in searches
+
 ## License
 
 MIT
