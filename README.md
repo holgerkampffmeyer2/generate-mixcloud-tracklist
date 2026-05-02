@@ -25,8 +25,10 @@ Opencode will:
 2. Extract artist, title, and timestamps from INDEX 01
 3. Filter out tracks with "Jingle" in the title
 4. Create an engaging Mixcloud title and description
-5. Create a tracklist file with the same name as input, e.g., `MyMix.cue` → `MyMix-tracklist.txt`
-6. No track numbering in output
+5. Generate exactly 5 genre tags (mix of broad and specific)
+6. Create a tracklist file with the same name as input, e.g., `MyMix.cue` → `MyMix-tracklist.txt`
+7. No track numbering in output
+8. Include TAGS section with comma-separated genre tags
 
 ## Output
 
@@ -45,6 +47,9 @@ TRACKLIST:
 
 Performer - Title HH:MM:SS
 ...
+
+TAGS:
+tag1, tag2, tag3, tag4, tag5
 ```
 
 Tracks containing "Jingle" in the title are automatically excluded.
@@ -53,7 +58,7 @@ Tracks containing "Jingle" in the title are automatically excluded.
 
 - **Title**: Use format "DJ Name Mix-XXX - Genre" (e.g., "DJ Hulk Mix-178 - Tech House")
 - **Description**: 2-3 sentences explaining mood/concept, make listeners curious
-- **Tags**: Use up to 5 genre tags - mix broad (House, Techno) with specific (Tech House, Deep House)
+- **Tags**: Exactly 5 genre tags required - mix broad (House, Techno) with specific (Tech House, Deep House). Listed as comma-separated `TAGS:` section in output file
 - **Tracklist**: Improves discoverability and appears in searches
 
 ## License
