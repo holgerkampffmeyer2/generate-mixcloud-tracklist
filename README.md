@@ -10,18 +10,20 @@ Just paste the generated Tracklist into the tracklist box when you are uploading
 
 ## Usage
 
+### 1. Parse the CUE file
 ```bash
-opencode
+python3 cue2tracklist.py <input.cue>
 ```
+Generates a `*-tracklist.txt` with parsed tracks, jingles filtered, and placeholders for AI to fill.
 
-Then ask Opencode to convert your CUE file:
-
+### 2. AI completes creative parts
+Use Opencode or another AI assistant to replace placeholders:
 ```
-Convert the file "path/to/your Rekordbox.cue" to a tracklist for Mixcloud
+Fill in the description, DJ name, and tags in "input-tracklist.txt" per the format below
 ```
 
 Opencode will:
-1. Parse the CUE file
+1. Run `cue2tracklist.py` to parse the CUE file
 2. Extract artist, title, and timestamps from INDEX 01
 3. Filter out tracks with "Jingle" in the title
 4. Create an engaging Mixcloud title and description
