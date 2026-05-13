@@ -5,17 +5,16 @@ Convert CUE files to tracklist text files with "-tracklist.txt" suffix.
 
 ## Workflow
 
+Run the script THEN immediately fill in the creative parts — both steps are required, never stop after step 1.
+
 ### 1. Run the parser script
 ```bash
 python3 cue2tracklist.py <input.cue>
 ```
-This generates a `*-tracklist.txt` file with:
-- Parsed track list (Performer - Title HH:MM:SS)
-- Jingles ("Jingle" in title) automatically filtered
-- Placeholders for description, DJ name, and tags
+This generates a `*-tracklist.txt` file with placeholders for description, DJ name, and tags.
 
-### 2. AI completes the creative parts (always in English)
-Replace placeholders in the generated file:
+### 2. AI fills creative parts (English, immediately after step 1)
+Replace the placeholders in the generated file:
 - **Description**: 2-3 engaging English sentences that make listeners curious
 - **DJ Name**: e.g., `DJ Hulk`
 - **Tags**: exactly 5 genre tags
