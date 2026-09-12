@@ -5,6 +5,16 @@ import re
 import sys
 from pathlib import Path
 
+DJ_HULK_BIO = """Electronic Music DJ from Stuttgart, Germany. I am the co-founder of the DJ collective ToMaTe Stuttgart n.e.V.
+I have performed at notable venues such as Romy S., EX-Club Zollamt, Mrs. Jones
+I love playing House and Tech House music. Sometimes spicing it up with Techno and DnB.
+You can find my weekly mixes on Mixcloud. You can also hear me on the web radio stations Couchradio, JDK Radio and 365 FM Radio
+
+Mixcloud: https://www.mixcloud.com/holger-kampffmeyer/
+Instagram: https://www.instagram.com/holgerkampffmeyer/"""
+
+DEFAULT_STATION = 'Vertic Club Radio'
+
 
 def parse_cue(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -57,12 +67,81 @@ def make_mix_title(global_title, global_performer):
     return f"{global_performer} Mix"
 
 
+def write_tracklist(path, mix_title, filtered, dj_name):
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(f"# {mix_title}\n")
+        f.write("## <Engaging description – 2-3 sentences, make listeners curious>\n\n")
+        f.write("If you enjoy, please fav, repost, comment!\n")
+        f.write(f"✨{dj_name} ✨\n\n")
+        f.write("---\n\n")
+        f.write("TRACKLIST:\n\n")
+        for t in filtered:
+            perf = t['performer'] if t['performer'] else '<unknown>'
+            f.write(f"{perf} - {t['title']} {t['index']}\n")
+        f.write("\nTAGS:\n")
+        f.write("<tag1>, <tag2>, <tag3>, <tag4>, <tag5>\n")
+
+
+def write_guestmix(path, mix_title, filtered, station, dj_name):
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(f"# {mix_title}\n")
+        f.write(f"## Guest Mix for {station} – <Engaging description, 2-3 sentences, mention the vibe and why listeners should tune in>\n\n")
+        f.write("If you enjoy, please fav, repost, comment!\n")
+        f.write(f"✨{dj_name} ✨\n\n")
+        f.write("---\n\n")
+        f.write("TRACKLIST:\n\n")
+        for t in filtered:
+            perf = t['performer'] if t['performer'] else '<unknown>'
+            f.write(f"{perf} - {t['title']} {t['index']}\n")
+        f.write("\n---\n\n")
+        f.write(f"About {dj_name}:\n\n")
+        f.write(DJ_HULK_BIO + "\n")
+
+
+def print_usage():
+    print("Usage: cue2tracklist.py <input.cue> [--guestmix [--station NAME]]", file=sys.stderr)
+    print("Options:", file=sys.stderr)
+    print("  --guestmix          Generate a guest mix text (description, tracklist, bio)", file=sys.stderr)
+    print("  --station NAME      Radio station name for the guest mix (default: Vertic Club Radio)", file=sys.stderr)
+    print("  -h, --help          Show this help", file=sys.stderr)
+
+
+def parse_args(argv):
+    guestmix = False
+    station = DEFAULT_STATION
+    cue_path = None
+    i = 0
+    while i < len(argv):
+        arg = argv[i]
+        if arg in ('-h', '--help'):
+            print_usage()
+            sys.exit(0)
+        elif arg == '--guestmix':
+            guestmix = True
+        elif arg == '--station':
+            i += 1
+            if i >= len(argv):
+                print("Error: --station requires a name", file=sys.stderr)
+                sys.exit(1)
+            station = argv[i]
+        elif arg.startswith('-'):
+            print(f"Error: unknown option: {arg}", file=sys.stderr)
+            print_usage()
+            sys.exit(1)
+        else:
+            cue_path = arg
+        i += 1
+    return cue_path, guestmix, station
+
+
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: cue2tracklist.py <input.cue>", file=sys.stderr)
+    cue_arg, guestmix, station = parse_args(sys.argv[1:])
+
+    if not cue_arg:
+        print_usage()
         sys.exit(1)
 
-    cue_path = Path(sys.argv[1])
+    cue_path = Path(cue_arg)
     if not cue_path.exists():
         print(f"Error: file not found: {cue_path}", file=sys.stderr)
         sys.exit(1)
@@ -76,20 +155,14 @@ def main():
         print("Error: no tracks remain after filtering jingles", file=sys.stderr)
         sys.exit(1)
 
-    out_path = cue_path.with_name(cue_path.stem + '-tracklist.txt')
+    dj_name = global_performer if global_performer else 'DJ Hulk'
+    suffix = '-guestmix.txt' if guestmix else '-tracklist.txt'
+    out_path = cue_path.with_name(cue_path.stem + suffix)
 
-    with open(out_path, 'w', encoding='utf-8') as f:
-        f.write(f"# {mix_title}\n")
-        f.write("## <Engaging description – 2-3 sentences, make listeners curious>\n\n")
-        f.write("If you enjoy, please fav, repost, comment!\n")
-        f.write("✨<Your DJ Name> ✨\n\n")
-        f.write("---\n\n")
-        f.write("TRACKLIST:\n\n")
-        for t in filtered:
-            perf = t['performer'] if t['performer'] else '<unknown>'
-            f.write(f"{perf} - {t['title']} {t['index']}\n")
-        f.write("\nTAGS:\n")
-        f.write("<tag1>, <tag2>, <tag3>, <tag4>, <tag5>\n")
+    if guestmix:
+        write_guestmix(str(out_path), mix_title, filtered, station, dj_name)
+    else:
+        write_tracklist(str(out_path), mix_title, filtered, dj_name)
 
     jingle_note = f" ({skip_count} jingle{'s' if skip_count != 1 else ''} filtered)" if skip_count else ""
     print(f"✓ {out_path.name} ({len(filtered)} tracks{jingle_note})")

@@ -13,6 +13,12 @@ python3 cue2tracklist.py <input.cue>
 ```
 This generates a `*-tracklist.txt` file with placeholders for description, DJ name, and tags.
 
+For a radio station guest mix (e.g., Vertic Club Radio):
+```bash
+python3 cue2tracklist.py <input.cue> --guestmix [--station "Vertic Club Radio"]
+```
+This generates a `*-guestmix.txt` with a description placeholder, the tracklist, and the DJ Hulk bio.
+
 ### 2. AI fills creative parts (English, immediately after step 1)
 Replace the placeholders in the generated file:
 - **Description**: 2-3 engaging English sentences that make listeners curious

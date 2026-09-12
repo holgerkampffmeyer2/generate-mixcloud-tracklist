@@ -16,6 +16,12 @@ python3 cue2tracklist.py <input.cue>
 ```
 Generates a `*-tracklist.txt` with parsed tracks, jingles filtered, and placeholders for AI to fill.
 
+### Guest Mix (radio station)
+```bash
+python3 cue2tracklist.py <input.cue> --guestmix [--station "Vertic Club Radio"]
+```
+Generates a `*-guestmix.txt` with a guest mix description, the full tracklist, and the DJ Hulk bio (for radio stations like Vertic Club Radio).
+
 ### 2. AI completes creative parts
 Use Opencode or another AI assistant to replace placeholders:
 ```
@@ -55,6 +61,8 @@ tag1, tag2, tag3, tag4, tag5
 ```
 
 Tracks containing "Jingle" in the title are automatically excluded.
+
+Guest mix output (`--guestmix`) appends the `About DJ Hulk:` bio section with links instead of the TAGS section.
 
 ## Mixcloud SEO Tips
 
