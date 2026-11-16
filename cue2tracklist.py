@@ -67,35 +67,84 @@ def make_mix_title(global_title, global_performer):
     return f"{global_performer} Mix"
 
 
+import html
+
+
+def track_lines(filtered):
+    lines = []
+    for t in filtered:
+        perf = t['performer'] if t['performer'] else '<unknown>'
+        lines.append(f"{perf} - {t['title']} {t['index']}")
+    return lines
+
+
 def write_tracklist(path, mix_title, filtered, dj_name):
+    tracks = track_lines(filtered)
     with open(path, 'w', encoding='utf-8') as f:
-        f.write(f"# {mix_title}\n")
+        f.write(f"# {mix_title}\n\n")
+        f.write("TEASER:\n")
+        f.write("<Teaser text – max 250 characters, catchy hook for notifications/previews>\n\n")
+        f.write("POST:\n")
         f.write("## <Engaging description – 2-3 sentences, make listeners curious>\n\n")
         f.write("If you enjoy, please fav, repost, comment!\n")
-        f.write(f"✨{dj_name} ✨\n\n")
+        f.write(f"✨**{dj_name}** ✨\n\n")
         f.write("---\n\n")
-        f.write("TRACKLIST:\n\n")
-        for t in filtered:
-            perf = t['performer'] if t['performer'] else '<unknown>'
-            f.write(f"{perf} - {t['title']} {t['index']}\n")
+        f.write("TRACKLIST:\n")
+        for line in tracks:
+            f.write(line + "\n")
         f.write("\nTAGS:\n")
         f.write("<tag1>, <tag2>, <tag3>, <tag4>, <tag5>\n")
 
+    html_path = Path(path).with_suffix('.html')
+    with open(html_path, 'w', encoding='utf-8') as f:
+        f.write(f"<h1>{html.escape(mix_title)}</h1>\n\n")
+        f.write("<h2>TEASER</h2>\n")
+        f.write("<p>&lt;Teaser text – max 250 characters, catchy hook for notifications/previews&gt;</p>\n\n")
+        f.write("<h2>POST</h2>\n")
+        f.write("<h3>&lt;Engaging description – 2-3 sentences, make listeners curious&gt;</h3>\n")
+        f.write("<p>If you enjoy, please fav, repost, comment!<br>✨<strong>" + html.escape(dj_name) + "</strong> ✨</p>\n\n")
+        f.write("<hr>\n\n")
+        f.write("<h3>TRACKLIST</h3>\n")
+        f.write("<pre>" + html.escape("\n".join(tracks)) + "</pre>\n\n")
+        f.write("<h2>TAGS</h2>\n")
+        f.write("<p>&lt;tag1&gt;, &lt;tag2&gt;, &lt;tag3&gt;, &lt;tag4&gt;, &lt;tag5&gt;</p>\n")
+
 
 def write_guestmix(path, mix_title, filtered, station, dj_name):
+    tracks = track_lines(filtered)
     with open(path, 'w', encoding='utf-8') as f:
-        f.write(f"# {mix_title}\n")
-        f.write(f"## Guest Mix for {station} – <Engaging description, 2-3 sentences, mention the vibe and why listeners should tune in>\n\n")
+        f.write(f"# {mix_title}\n\n")
+        f.write("TEASER:\n")
+        f.write("<Teaser text – max 250 characters, catchy hook for notifications/previews>\n\n")
+        f.write("POST:\n")
+        f.write(f"## Guest Mix for {station}\n\n")
+        f.write("<Engaging description, 2-3 sentences, mention the vibe and why listeners should tune in>\n\n")
         f.write("If you enjoy, please fav, repost, comment!\n")
-        f.write(f"✨{dj_name} ✨\n\n")
+        f.write(f"✨**{dj_name}** ✨\n\n")
         f.write("---\n\n")
-        f.write("TRACKLIST:\n\n")
-        for t in filtered:
-            perf = t['performer'] if t['performer'] else '<unknown>'
-            f.write(f"{perf} - {t['title']} {t['index']}\n")
+        f.write("TRACKLIST:\n")
+        for line in tracks:
+            f.write(line + "\n")
         f.write("\n---\n\n")
-        f.write(f"About {dj_name}:\n\n")
+        f.write(f"### About {dj_name}\n")
         f.write(DJ_HULK_BIO + "\n")
+
+    html_path = Path(path).with_suffix('.html')
+    bio_html = "<br>".join(html.escape(line) for line in DJ_HULK_BIO.splitlines())
+    with open(html_path, 'w', encoding='utf-8') as f:
+        f.write(f"<h1>{html.escape(mix_title)}</h1>\n\n")
+        f.write("<h2>TEASER</h2>\n")
+        f.write("<p>&lt;Teaser text – max 250 characters, catchy hook for notifications/previews&gt;</p>\n\n")
+        f.write("<h2>POST</h2>\n")
+        f.write(f"<h3>Guest Mix for {html.escape(station)}</h3>\n")
+        f.write("<p>&lt;Engaging description, 2-3 sentences, mention the vibe and why listeners should tune in&gt;</p>\n")
+        f.write("<p>If you enjoy, please fav, repost, comment!<br>✨<strong>" + html.escape(dj_name) + "</strong> ✨</p>\n\n")
+        f.write("<hr>\n\n")
+        f.write("<h3>TRACKLIST</h3>\n")
+        f.write("<pre>" + html.escape("\n".join(tracks)) + "</pre>\n\n")
+        f.write("<hr>\n\n")
+        f.write(f"<h3>About {html.escape(dj_name)}</h3>\n")
+        f.write(f"<p>{bio_html}</p>\n")
 
 
 def print_usage():
@@ -164,8 +213,9 @@ def main():
     else:
         write_tracklist(str(out_path), mix_title, filtered, dj_name)
 
+    html_path = out_path.with_suffix('.html')
     jingle_note = f" ({skip_count} jingle{'s' if skip_count != 1 else ''} filtered)" if skip_count else ""
-    print(f"✓ {out_path.name} ({len(filtered)} tracks{jingle_note})")
+    print(f"✓ {out_path.name}, {html_path.name} ({len(filtered)} tracks{jingle_note})")
 
 
 if __name__ == '__main__':

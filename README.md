@@ -14,45 +14,49 @@ Just paste the generated Tracklist into the tracklist box when you are uploading
 ```bash
 python3 cue2tracklist.py <input.cue>
 ```
-Generates a `*-tracklist.txt` with parsed tracks, jingles filtered, and placeholders for AI to fill.
+Generates `*-tracklist.txt` and `*-tracklist.html` with parsed tracks, jingles filtered, and placeholders for AI to fill (teaser, post, tags).
 
 ### Guest Mix (radio station)
 ```bash
 python3 cue2tracklist.py <input.cue> --guestmix [--station "Vertic Club Radio"]
 ```
-Generates a `*-guestmix.txt` with a guest mix description, the full tracklist, and the DJ Hulk bio (for radio stations like Vertic Club Radio).
+Generates `*-guestmix.txt` and `*-guestmix.html` with teaser/post placeholders, the full tracklist, and the DJ Hulk bio.
 
 ### 2. AI completes creative parts
-Use Opencode or another AI assistant to replace placeholders:
+Use Opencode or another AI assistant to replace placeholders in both `.txt` and `.html`:
 ```
-Fill in the description, DJ name, and tags in "input-tracklist.txt" per the format below
+Fill in the teaser, post text, DJ name, and tags in "input-tracklist.txt" and "input-tracklist.html" per the format below
 ```
 
 Opencode will:
 1. Run `cue2tracklist.py` to parse the CUE file
 2. Extract artist, title, and timestamps from INDEX 01
 3. Filter out tracks with "Jingle" in the title
-4. Create an engaging Mixcloud title and description
-5. Generate exactly 5 genre tags (mix of broad and specific)
-6. Create a tracklist file with the same name as input, e.g., `MyMix.cue` → `MyMix-tracklist.txt`
-7. No track numbering in output
-8. Include TAGS section with comma-separated genre tags
+4. Create an engaging Mixcloud title
+5. Write a teaser (separate field, max 250 characters)
+6. Write post text (supports heading, bold, italic) with a catchy 2-3 sentence description
+7. Generate exactly 5 genre tags (mix of broad and specific) for tracklist outputs
+8. Create files with the same name as input, e.g., `MyMix.cue` → `MyMix-tracklist.txt` + `MyMix-tracklist.html` (or `*-guestmix.*`) with matching content and formatted POST in HTML
 
 ## Output
 
-Generates a `*tracklist.txt` file with format:
+Generates `*tracklist.txt` and `*tracklist.html` files with format:
 
 ```
 # Mix Title
+
+TEASER:
+<Short teaser text, max 250 characters>
+
+POST:
 ## Engaging description (2-3 sentences, makes listeners curious)
 
 If you enjoy, please fav, repost, comment!
-✨Your DJ Name ✨
+✨**Your DJ Name** ✨
 
 ---
 
 TRACKLIST:
-
 Performer - Title HH:MM:SS
 ...
 
@@ -60,15 +64,18 @@ TAGS:
 tag1, tag2, tag3, tag4, tag5
 ```
 
+The `.html` variant mirrors the content with formatted POST markup (`<h3>`, `<p>`, `<strong>`, `<em>`) so it can be pasted into fields that support rich/HTML formatting.
+
 Tracks containing "Jingle" in the title are automatically excluded.
 
-Guest mix output (`--guestmix`) appends the `About DJ Hulk:` bio section with links instead of the TAGS section.
+Guest mix output (`--guestmix`) uses a `### About DJ Hulk` section with bio/links instead of the TAGS section.
 
-## Mixcloud SEO Tips
+## Mixcloud Tips
 
 - **Title**: Use format "DJ Name Mix-XXX - Genre" (e.g., "DJ Hulk Mix-178 - Tech House")
-- **Description**: 2-3 sentences explaining mood/concept, make listeners curious
-- **Tags**: Exactly 5 genre tags required - mix broad (House, Techno) with specific (Tech House, Deep House). Listed as comma-separated `TAGS:` section in output file
+- **Teaser**: Separate field, max 250 characters; hook for notifications/previews
+- **Post text**: 2-3 sentences explaining mood/concept, make listeners curious. Supports headings, **bold**, and *italic*
+- **Tags**: Exactly 5 genre tags required (tracklist outputs) - mix broad (House, Techno) with specific (Tech House, Deep House), comma-separated in `TAGS:`
 - **Tracklist**: Improves discoverability and appears in searches
 
 ## License
