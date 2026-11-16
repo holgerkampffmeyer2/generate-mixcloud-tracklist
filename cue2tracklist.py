@@ -61,6 +61,18 @@ def is_jingle(title):
     return 'Jingle' in title
 
 
+def dedupe_tracks(tracks):
+    seen = set()
+    unique = []
+    for t in tracks:
+        key = (t['performer'].strip().lower(), t['title'].strip().lower())
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(t)
+    return unique
+
+
 def make_mix_title(global_title, global_performer):
     if global_title:
         return global_title
@@ -197,8 +209,10 @@ def main():
 
     global_title, global_performer, tracks = parse_cue(str(cue_path))
     mix_title = make_mix_title(global_title, global_performer)
-    filtered = [t for t in tracks if not is_jingle(t['title'])]
-    skip_count = len(tracks) - len(filtered)
+    non_jingle = [t for t in tracks if not is_jingle(t['title'])]
+    filtered = dedupe_tracks(non_jingle)
+    jingle_count = len(tracks) - len(non_jingle)
+    duplicate_count = len(non_jingle) - len(filtered)
 
     if not filtered:
         print("Error: no tracks remain after filtering jingles", file=sys.stderr)
@@ -214,8 +228,13 @@ def main():
         write_tracklist(str(out_path), mix_title, filtered, dj_name)
 
     html_path = out_path.with_suffix('.html')
-    jingle_note = f" ({skip_count} jingle{'s' if skip_count != 1 else ''} filtered)" if skip_count else ""
-    print(f"✓ {out_path.name}, {html_path.name} ({len(filtered)} tracks{jingle_note})")
+    notes = []
+    if jingle_count:
+        notes.append(f"{jingle_count} jingle{'s' if jingle_count != 1 else ''} filtered")
+    if duplicate_count:
+        notes.append(f"{duplicate_count} duplicate{'s' if duplicate_count != 1 else ''} removed")
+    note = f" ({', '.join(notes)})" if notes else ""
+    print(f"✓ {out_path.name}, {html_path.name} ({len(filtered)} tracks{note})")
 
 
 if __name__ == '__main__':

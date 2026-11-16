@@ -103,6 +103,7 @@ Performer - Title HH:MM:SS
 - Teaser must be <= 250 characters
 - No track numbering
 - Filter out jingle tracks (exclude entries with "Jingle" in the title)
+- Filter out duplicate tracks: Rekordbox creates repeated entries when a track is cut out/in several times with the fader. Keep only the first occurrence and drop later duplicates (same performer + title)
 - Use the timestamps from INDEX 01 in the CUE file
 - Create an engaging Mixcloud title (e.g., "DJ Name Mix-XXX - Genre")
 - Add a teaser (max 250 chars) and a catchy 2-3 sentence post description
