@@ -58,7 +58,7 @@ def parse_cue(filepath):
 
 
 def is_jingle(title):
-    return 'Jingle' in title
+    return 'jingle' in title.lower()
 
 
 def dedupe_tracks(tracks):
